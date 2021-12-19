@@ -1,5 +1,7 @@
 package io.arpaul.ppmtool.repositories;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +14,7 @@ public interface ProjectRepository extends CrudRepository<Project, Long> {
 	Iterable<Project> findAllById(Iterable<Long> ids);
 	
 	Project findByProjectIdentifier(String projectIdentifier);
+	
+	@Override
+	Iterable<Project> findAll();
 }
