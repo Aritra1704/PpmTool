@@ -1,4 +1,4 @@
-// Next Course episode chapter 37
+// Next Course episode chapter 41
 import React, { Component } from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from './App.css';
@@ -8,6 +8,7 @@ import store, { history } from "./store";
 import Header from './components/layout/Header';
 import Dashboard from './components/Dashboard';
 import AddProject from './components/project/AddProject';
+import UpdateProject from './components/project/UpdateProject';
 
 class App extends Component {
   render () {
@@ -21,6 +22,7 @@ class App extends Component {
               <Route path="/" element={<Navigate replace to="/dashboard" />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/addProject" element={<AddProject history={history} />} />
+              <Route path="/updateProject/:id" element={<UpdateProject history={history} />} />
             </Routes>
           </div>
         </Router>

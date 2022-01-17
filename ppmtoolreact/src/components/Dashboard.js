@@ -7,7 +7,6 @@ import {getProjects} from '../actions/projectActions';
 
 class Dashboard extends Component {
     componentDidMount() {
-        console.log('componentDidMount called');
         this.props.getProjects();
     }
 
