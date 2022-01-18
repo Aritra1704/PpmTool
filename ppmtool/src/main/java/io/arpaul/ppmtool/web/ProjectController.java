@@ -42,7 +42,7 @@ public class ProjectController {
 		if(errorMap != null) return errorMap;
 		
 		Project response = projectService.insertOrUpdateProject(request);
-		return  new ResponseEntity<Project>(response, HttpStatus.CREATED);
+		return new ResponseEntity<Project>(response, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{projectIdentifier}")

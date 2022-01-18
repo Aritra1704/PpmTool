@@ -23,6 +23,9 @@ class UpdateProject extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if(nextProps.errors) {
+            this.setState({ errors : nextProps.errors });
+        } 
         const { 
             id,
             projectName,
@@ -30,16 +33,16 @@ class UpdateProject extends Component {
             description,
             start_date,
             end_date
-         } = nextProps.project;
+        } = nextProps.project;
         
-         this.setState({
-             id,
-             projectName,
-             projectIdentifier,
-             description,
-             start_date,
-             end_date
-         });
+        this.setState({
+            id,
+            projectName,
+            projectIdentifier,
+            description,
+            start_date,
+            end_date
+        });
     }
     componentDidMount() {
         const { history } = this.props;
@@ -69,6 +72,7 @@ class UpdateProject extends Component {
         this.props.createProject(updateProject, this.props.history);
     }
     render () {
+        const { errors } = this.state;
         return (
             <div className="register">
                 <div className="container">
@@ -82,12 +86,19 @@ class UpdateProject extends Component {
                                 <div className="form-group">
                                     <input 
                                         type="text" 
-                                        className="form-control form-control-lg " 
+                                        className={classNames("form-control form-control-lg ", {
+                                            "is-invalid": errors.projectName
+                                        }) }
                                         placeholder="Project Name" 
                                         name='projectName'
                                         value={this.state.projectName} 
                                         onChange={this.handleChange} 
                                     />
+                                    {
+                                        errors.projectName && (
+                                            <div className='invalid-feedback'>{errors.projectName}</div>
+                                        )
+                                    }
                                 </div>
                                 <div className="form-group">
                                     <input 
@@ -100,13 +111,20 @@ class UpdateProject extends Component {
                                 </div>
                                 <div className="form-group">
                                     <textarea  
-                                        className="form-control form-control-lg" 
+                                        className={classNames("form-control form-control-lg", {
+                                            "is-invalid": errors.description
+                                        })} 
                                         placeholder="Project Description"
                                         name='description'
                                         value={this.state.description}
                                         onChange={this.handleChange} 
                                     >
                                     </textarea>
+                                    {
+                                        errors.description && (
+                                            <div className='invalid-feedback'>{errors.description}</div>
+                                        )
+                                    }
                                 </div>
                                 <h6>Start Date</h6>
                                 <div className="form-group">
