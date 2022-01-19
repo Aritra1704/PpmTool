@@ -19,6 +19,24 @@ export const createProject = (project, history) => async dispatch => {
     }
 }
 
+export const updateProject = (project, history) => async dispatch => {
+    let type;
+    let payload;
+    try {
+        await axios.post(`/api/project/${project.projectIdentifier}`, project);
+        history.push("/dashboard");
+        type = GET_ERRORS;
+        payload = {};
+            // Use below for naviaget hooks in router v6
+            // navigate("/", { replace: true});
+    } catch (err) {
+        type = GET_ERRORS;
+        payload = err.response.data;
+    } finally {
+        dispatch({ type, payload });
+    }
+}
+
 export const getProjects = () => async dispatch => {
     let type;
     let payload;

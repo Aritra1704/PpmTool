@@ -1,34 +1,23 @@
-package io.arpaul.ppmtool.domain;
+package io.arpaul.ppmtool.models.request;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-
-@Entity
-public class Project {
-	
+public class CreateProjectRequest {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@NotBlank(message = "Project name is required")
 	private String projectName;
 	@NotBlank(message = "Project identifier is required")
-	@NotNull
 	@Size(min = 4, max = 5, message = "Please use 4 to 5 characters")
 	@Column(updatable = false, unique = true)
 	private String projectIdentifier;
@@ -39,27 +28,12 @@ public class Project {
 	@JsonFormat(pattern = "yy-mm-dd")
 	private Date end_date;
 	@JsonFormat(pattern = "yy-mm-dd")
-	@Column(updatable = false)
 	private Date created_at;
 	@JsonFormat(pattern = "yy-mm-dd")
 	private Date modified_at;
-	@OneToOne(
-			fetch = FetchType.EAGER, // Fetches all data at a time 
-			cascade = CascadeType.ALL, // Required so that on deletion of Project all children gets deleted, but vice-versa not true 
-			mappedBy = "project")// Need to be same for children too
-	private Backlog backlog;
 	
-	public  Project() {	
-	}
-	
-	@PrePersist
-	protected void onCreate() {
-		this.created_at = new Date();
-	}
-	
-	@PreUpdate
-	protected void onUpdate() {
-		this.modified_at = new Date();
+	public CreateProjectRequest() {
+		super();
 	}
 
 	public Long getId() {
@@ -126,11 +100,10 @@ public class Project {
 		this.modified_at = modified_at;
 	}
 
-	public Backlog getBacklog() {
-		return backlog;
-	}
-
-	public void setBacklog(Backlog backlog) {
-		this.backlog = backlog;
+	@Override
+	public String toString() {
+		return "CreateProjectRequst [id=" + id + ", projectName=" + projectName + ", projectIdentifier="
+				+ projectIdentifier + ", description=" + description + ", start_date=" + start_date + ", end_date="
+				+ end_date + ", created_at=" + created_at + ", modified_at=" + modified_at + "]";
 	}
 }

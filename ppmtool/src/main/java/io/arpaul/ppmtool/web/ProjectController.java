@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.arpaul.ppmtool.domain.Project;
+import io.arpaul.ppmtool.models.request.CreateProjectRequest;
+import io.arpaul.ppmtool.models.request.UpdateProjectRequest;
 import io.arpaul.ppmtool.services.MapValidationErrorService;
 import io.arpaul.ppmtool.services.ProjectService;
 
@@ -37,11 +39,44 @@ public class ProjectController {
 	private MapValidationErrorService mapValidationErrorService;
 	
 	@PostMapping("")
-	public ResponseEntity<?> createNewProject(@Valid @RequestBody Project request, BindingResult result) {
+	public ResponseEntity<?> createNewProject(@Valid @RequestBody CreateProjectRequest request, BindingResult result) {
 		ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
 		if(errorMap != null) return errorMap;
 		
-		Project response = projectService.insertOrUpdateProject(request);
+		Project project = new Project();
+		project.setProjectName(request.getProjectName());
+		project.setProjectIdentifier(request.getProjectIdentifier());
+		project.setDescription(request.getDescription());
+		
+		project.setStart_date(request.getStart_date());
+		project.setEnd_date(request.getEnd_date());
+		
+		project.setCreated_at(request.getCreated_at());
+		project.setModified_at(request.getModified_at());
+		Project response = projectService.insertProject(project);
+		return new ResponseEntity<Project>(response, HttpStatus.OK);
+	}
+	
+	@PutMapping("/{projectIdentifier}")
+	public ResponseEntity<?> updateProject(
+			@Valid @RequestBody UpdateProjectRequest request,  
+			BindingResult result,
+			@PathVariable String projectIdentifier) {
+		ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+		if(errorMap != null) return errorMap;
+		
+		Project project = new Project();
+		project.setProjectName(request.getProjectName());
+		project.setProjectIdentifier(projectIdentifier);
+		project.setDescription(request.getDescription());
+		
+		project.setStart_date(request.getStart_date());
+		project.setEnd_date(request.getEnd_date());
+		
+		project.setCreated_at(request.getCreated_at());
+		project.setModified_at(request.getModified_at());
+		
+		Project response = projectService.updateProject(project, projectIdentifier);
 		return new ResponseEntity<Project>(response, HttpStatus.OK);
 	}
 	
