@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -47,6 +48,7 @@ public class Project {
 			fetch = FetchType.EAGER, // Fetches all data at a time 
 			cascade = CascadeType.ALL, // Required so that on deletion of Project all children gets deleted, but vice-versa not true 
 			mappedBy = "project")// Need to be same for children too
+	@JsonIgnore
 	private Backlog backlog;
 	
 	public  Project() {	
