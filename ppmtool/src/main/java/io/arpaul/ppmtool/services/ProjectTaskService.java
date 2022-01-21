@@ -59,4 +59,37 @@ public class ProjectTaskService {
 		return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
 		
 	}
+	
+	public ProjectTask findProjectTaskBySequence(String backlog_id, String projectTaskId) {
+		Backlog backlog = backlogRepository.findByProjectIdentifier(backlog_id);
+		
+		if(backlog == null) { // Checks if project exists
+			throw new ProjectNotFoundException("Project with ID '"+backlog_id.toUpperCase()+"' does not exists.");
+		}
+		
+		ProjectTask projectTask = projectTaskRepository.findByProjectSequence(projectTaskId);
+		if(projectTask == null) { // Checks if project task exists
+			throw new ProjectNotFoundException("Project Task '"+projectTaskId.toUpperCase()+"' does not exists.");
+		}
+		
+		if(!projectTask.getProjectIdentifier().equalsIgnoreCase(backlog_id)) { // Checks if project task belongs to respective project
+			throw new ProjectNotFoundException("Project Task '"+projectTaskId.toUpperCase()+"' does not exists in project: '"+backlog_id+"'.");
+		}
+		
+		return projectTask;
+	}
+	
+	public ProjectTask updateTaskByProjectSequence(ProjectTask updatedTask, String backlog_id, String projectTaskId) {
+		ProjectTask projectTask = findProjectTaskBySequence(backlog_id, projectTaskId);
+		
+		projectTask = updatedTask;
+		
+		return projectTaskRepository.save(projectTask);
+	}
+	
+	public void deleteProjectTaskByProjectSequence(String backlog_id, String projectTaskId) {
+		ProjectTask projectTask = findProjectTaskBySequence(backlog_id, projectTaskId);
+		
+		projectTaskRepository.delete(projectTask);
+	}
 }
