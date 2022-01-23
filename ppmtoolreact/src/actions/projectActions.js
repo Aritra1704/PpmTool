@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ERRORS, GET_PROJECTS, GET_PROJECT, DELETE_PROJECT } from "./types";
+import { GET_ERRORS, GET_PROJECTS, GET_PROJECT, DELETE_PROJECT, CREATE_PROJECTS, UPDATE_PROJECTS } from "./types";
 
 export const createProject = (project, history) => async dispatch => {
     let type;
@@ -7,7 +7,7 @@ export const createProject = (project, history) => async dispatch => {
     try {
         await axios.post("/api/project", project);
         history.push("/dashboard");
-        type = GET_ERRORS;
+        type = CREATE_PROJECTS;
         payload = {};
             // Use below for naviaget hooks in router v6
             // navigate("/", { replace: true});
@@ -26,7 +26,7 @@ export const updateProject = (project, history) => async dispatch => {
         console.log(project);
         await axios.put(`/api/project/${project.projectIdentifier}`, project);
         history.push("/dashboard");
-        type = GET_ERRORS;
+        type = UPDATE_PROJECTS;
         payload = {};
             // Use below for naviaget hooks in router v6
             // navigate("/", { replace: true});

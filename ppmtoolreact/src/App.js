@@ -1,4 +1,4 @@
-// Next Course episode chapter 60
+// Next Course episode chapter 
 import React, { Component } from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from './App.css';
@@ -9,6 +9,8 @@ import Header from './components/layout/Header';
 import Dashboard from './components/Dashboard';
 import AddProject from './components/project/AddProject';
 import UpdateProject from './components/project/UpdateProject';
+import ProjectBoard from './components/projectBoard/ProjectBoard';
+import AddProjectTask from './components/projectBoard/projectTasks/AddProjectTask';
 
 class App extends Component {
   render () {
@@ -23,6 +25,8 @@ class App extends Component {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/addProject" element={<AddProject history={history} />} />
               <Route path="/updateProject/:id" element={<UpdateProject history={history} />} />
+              <Route path="//:id" element={<ProjectBoard history={history} />} />
+              <Route path="/addProjectTask/:id" element={<AddProjectTask history={history} />} />
             </Routes>
           </div>
         </Router>

@@ -50,9 +50,9 @@ class UpdateProject extends Component {
         if(!path.includes("/updateProject"))  {// workaround to get correct params
             window.location.reload(false);
         } else {
-            const pathSplit = this.props.history.location.pathname.toString().split("/");
+            const pathSplit = path.toString().split("/");
             const id = pathSplit[pathSplit.length - 1];
-            this.props.getProject(id, this.props.history)
+            this.props.getProject(id, history)
         }
     }
     handleChange = (e) => {
