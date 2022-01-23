@@ -23,7 +23,8 @@ export const updateProject = (project, history) => async dispatch => {
     let type;
     let payload;
     try {
-        await axios.post(`/api/project/${project.projectIdentifier}`, project);
+        console.log(project);
+        await axios.put(`/api/project/${project.projectIdentifier}`, project);
         history.push("/dashboard");
         type = GET_ERRORS;
         payload = {};
