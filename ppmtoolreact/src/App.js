@@ -1,4 +1,4 @@
-// Next Course episode chapter 
+// Next Course episode chapter 73
 import React, { Component } from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from './App.css';
@@ -25,7 +25,7 @@ class App extends Component {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/addProject" element={<AddProject history={history} />} />
               <Route path="/updateProject/:id" element={<UpdateProject history={history} />} />
-              <Route path="//:id" element={<ProjectBoard history={history} />} />
+              <Route path="/projectBoard/:id" element={<ProjectBoard history={history} />} />
               <Route path="/addProjectTask/:id" element={<AddProjectTask history={history} />} />
             </Routes>
           </div>

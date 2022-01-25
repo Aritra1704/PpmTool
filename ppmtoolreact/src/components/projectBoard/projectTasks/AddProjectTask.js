@@ -10,7 +10,13 @@ class AddProjectTask extends Component {
     constructor(props) {
         super(props);
 
-        const id = getId(props, "addProjectTask");
+        let id;
+        const path = this.props.history.location.pathname;
+        if(!path.includes("/addProjectTask"))  {// workaround to get correct params
+            window.location.reload(false);
+        } else {
+            id = getId(props, "addProjectTask");
+        } 
 
         this.state = {
             "summary": "",
@@ -22,24 +28,39 @@ class AddProjectTask extends Component {
             "errors": {}
         }
 
+        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
+        }
+    }
+
+    handleChange = (e) => {
+        this.setState({ [e.currentTarget.name]: e.currentTarget.value })
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        // const updateProject = {
-        //     "projectName": this.state.projectName,
-        //     "projectIdentifier": this.state.projectIdentifier,
-        //     "description": this.state.description,
-        //     "start_date": this.state.start_date,
-        //     "end_date": this.state.end_date,
-        // };
-    }
+        const newTask = {
+            "summary": this.state.summary,
+            "acceptanceCriteria": this.state.acceptanceCriteria,
+            "status": this.state.status,
+            "priority": this.state.priority,
+            "dueDate": this.state.dueDate,
+        };
 
-    
+        console.log(newTask);
+        this.props.addProjectTask(this.state.projectIdentifier,
+            newTask,
+            this.props.history);
+    }
 
     render() {
         const id = getId(this.props, "addProjectTask");
+        const { errors } = this.state;
         
         return (
             <div className="add-PBI">
@@ -55,34 +76,59 @@ class AddProjectTask extends Component {
                                 <div className="form-group">
                                     <input 
                                         type="text" 
-                                        className="form-control form-control-lg" 
+                                        className={classNames("form-control form-control-lg" , {
+                                            "is-invalid": errors.summary
+                                        }) }
                                         name="summary" 
                                         placeholder="Project Task summary" 
                                         value={this.state.summary}
+                                        onChange={this.handleChange}
                                     />
+                                    {
+                                        errors.summary && (
+                                            <div className='invalid-feedback'>{errors.summary}</div>
+                                        )
+                                    }
                                 </div>
                                 <div className="form-group">
                                     <textarea 
-                                        className="form-control form-control-lg" 
+                                        className={classNames("form-control form-control-lg" , {
+                                            "is-invalid": errors.acceptanceCriteria
+                                        }) }
                                         placeholder="Acceptance Criteria" 
                                         name="acceptanceCriteria"
                                         value={this.state.acceptanceCriteria}
+                                        onChange={this.handleChange}
                                     />
+                                    {
+                                        errors.acceptanceCriteria && (
+                                            <div className='invalid-feedback'>{errors.acceptanceCriteria}</div>
+                                        )
+                                    }
                                 </div>
                                 <h6>Due Date</h6>
                                 <div className="form-group">
                                     <input 
                                         type="date" 
-                                        className="form-control form-control-lg" 
+                                        className={classNames("form-control form-control-lg" , {
+                                            "is-invalid": errors.dueDate
+                                        }) }
                                         name="dueDate" 
                                         value={this.state.dueDate}
-                                        />
+                                        onChange={this.handleChange}
+                                    />
+                                    {
+                                        errors.dueDate && (
+                                            <div className='invalid-feedback'>{errors.dueDate}</div>
+                                        )
+                                    }
                                 </div>
                                 <div className="form-group">
                                     <select 
                                         className="form-control form-control-lg" 
                                         name="priority"
                                         value={this.state.priority}
+                                        onChange={this.handleChange}
                                     >
                                         <option value={0}>Select Priority</option>
                                         <option value={1}>High</option>
@@ -96,6 +142,7 @@ class AddProjectTask extends Component {
                                         className="form-control form-control-lg" 
                                         name="status"
                                         value={this.state.status}
+                                        onChange={this.handleChange}
                                     >
                                         <option value="">Select Status</option>
                                         <option value="TO_DO">TO DO</option>
@@ -122,7 +169,11 @@ AddProjectTask.propTypes = {
     errors: PropTypes.object.isRequired
 };
 
+const mapStateToProps = (state) => ({
+    errors: state.errors
+})
+
 export default connect(
-    null,
+    mapStateToProps,
     { addProjectTask }
 )(AddProjectTask);
