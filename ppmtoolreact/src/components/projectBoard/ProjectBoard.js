@@ -17,10 +17,10 @@ class ProjectBoard extends Component {
         if(nextProps.errors) {
             this.setState({ errors: nextProps.errors });
         }
-        
     }
     componentDidMount() {
-        const id = getId(this.props, "projectBoard");
+        const pathSplit = getId(this.props);
+        const id = pathSplit[pathSplit.length - 1];
         this.props.getBacklog(id);
     }
     render() {
@@ -30,14 +30,10 @@ class ProjectBoard extends Component {
             window.location.reload(false);
         } else {
             id = getId(this.props, "projectBoard");
-            // this.props.getProject(id, history)
         } 
         const { project_tasks } = this.props.backlog;
         const { errors } = this.state;
-
         let boardContent;
-        
-
         boardContent = boardAlgo(errors, project_tasks);
 
         return (

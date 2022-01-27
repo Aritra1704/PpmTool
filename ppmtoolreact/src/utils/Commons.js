@@ -1,14 +1,6 @@
-export const getId = ({ history }, urlPath) => {
+export const getId = ({ history }) => {
     const path = history.location.pathname;
-    console.log(`Path >> ${path}`);
-    console.log(`URL Path >> ${urlPath}`);
-    let id;
-    if(path.includes(`/${urlPath}`))  {// workaround to get correct params
-        const pathSplit = path.toString().split("/");
-        id = pathSplit[pathSplit.length - 1];
-        console.log(`Id >> ${id}`);
-    }
-    return id;
+    return path.toString().split("/");
 };
 
 export const boardAlgo = (errors, project_tasks) => {

@@ -1,4 +1,4 @@
-// Next Course episode chapter 73
+// Next Course episode chapter 75
 import React, { Component } from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from './App.css';
@@ -11,6 +11,7 @@ import AddProject from './components/project/AddProject';
 import UpdateProject from './components/project/UpdateProject';
 import ProjectBoard from './components/projectBoard/ProjectBoard';
 import AddProjectTask from './components/projectBoard/projectTasks/AddProjectTask';
+import UpdateProjectTask from './components/projectBoard/projectTasks/UpdateProjectTask';
 
 class App extends Component {
   render () {
@@ -27,6 +28,7 @@ class App extends Component {
               <Route path="/updateProject/:id" element={<UpdateProject history={history} />} />
               <Route path="/projectBoard/:id" element={<ProjectBoard history={history} />} />
               <Route path="/addProjectTask/:id" element={<AddProjectTask history={history} />} />
+              <Route path="/updateProjectTask/:backlog_id/:projectTaskId" element={<UpdateProjectTask history={history} />} />
             </Routes>
           </div>
         </Router>

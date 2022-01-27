@@ -15,7 +15,8 @@ class AddProjectTask extends Component {
         if(!path.includes("/addProjectTask"))  {// workaround to get correct params
             window.location.reload(false);
         } else {
-            id = getId(props, "addProjectTask");
+            const pathSplit = getId(props);
+            id = pathSplit[pathSplit.length - 1];
         } 
 
         this.state = {
@@ -59,7 +60,8 @@ class AddProjectTask extends Component {
     }
 
     render() {
-        const id = getId(this.props, "addProjectTask");
+        const pathSplit = getId(this.props);
+        const id = pathSplit[pathSplit.length - 1];
         const { errors } = this.state;
         
         return (
