@@ -9,6 +9,7 @@ export const createProject = (project, history) => async dispatch => {
         history.push("/dashboard");
         type = CREATE_PROJECTS;
         payload = {};
+        dispatch({ type: GET_ERRORS, payload: {} });// resetting error
             // Use below for naviaget hooks in router v6
             // navigate("/", { replace: true});
     } catch (err) {
@@ -28,6 +29,7 @@ export const updateProject = (project, history) => async dispatch => {
         history.push("/dashboard");
         type = UPDATE_PROJECTS;
         payload = {};
+        dispatch({ type: GET_ERRORS, payload: {} });// resetting error
             // Use below for naviaget hooks in router v6
             // navigate("/", { replace: true});
     } catch (err) {
@@ -45,6 +47,7 @@ export const getProjects = () => async dispatch => {
         const res = await axios.get("/api/project/all");
         type = GET_PROJECTS;
         payload = res.data;
+        dispatch({ type: GET_ERRORS, payload: {} });// resetting error
     } catch(err) {
         type = GET_ERRORS;
         payload = err.response.data;
@@ -62,6 +65,7 @@ export const getProject = (id, history) => async dispatch => {
         const res = await axios.get(URL);
         type = GET_PROJECT;
         payload = res.data;
+        dispatch({ type: GET_ERRORS, payload: {} });// resetting error
     } catch (err) {
         type = GET_ERRORS;
         payload = err.response.data;

@@ -24,12 +24,13 @@ class ProjectBoard extends Component {
         this.props.getBacklog(id);
     }
     render() {
-        let id;
+        let backlog_id;
         const path = this.props.history.location.pathname;
         if(!path.includes("/projectBoard"))  {// workaround to get correct params
             window.location.reload(false);
         } else {
-            id = getId(this.props, "projectBoard");
+            const pathSplit = getId(this.props);
+            backlog_id = pathSplit[pathSplit.length - 1];
         } 
         const { project_tasks } = this.props.backlog;
         const { errors } = this.state;
@@ -38,7 +39,7 @@ class ProjectBoard extends Component {
 
         return (
             <div className="container">
-                <Link to={`/addProjectTask/${id}`} className="btn btn-primary mb-3">
+                <Link to={`/addProjectTask/${backlog_id}`} className="btn btn-primary mb-3">
                     <i className="fas fa-plus-circle"> Create Project Task</i>
                 </Link>
                 <br />

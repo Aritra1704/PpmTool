@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { getId } from '../../../utils/Commons';
 import classNames from 'classnames';
 import { getProjectTask, updateProjectTask } from "../../../actions/backlogActions";
+import { Link } from 'react-router-dom';
 
 class UpdateProjectTask extends Component {
     constructor(props) {
@@ -90,7 +91,6 @@ class UpdateProjectTask extends Component {
             "dueDate": this.state.dueDate,
         };
 
-        console.log(updateTask);
         this.props.updateProjectTask(this.state.projectIdentifier,
             this.state.projectSequence,
             updateTask,
@@ -104,9 +104,9 @@ class UpdateProjectTask extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-8 m-auto">
-                            <a href="#" className="btn btn-light">
+                            <Link to={`/projectBoard/${this.state.projectIdentifier}`} className="btn btn-light">
                                 Back to Project Board
-                            </a>
+                            </Link>
                             <h4 className="display-4 text-center">Update Project Task</h4>
                             <p className="lead text-center">Project Name: {this.state.projectIdentifier} | 
                             Project Task ID: {this.state.projectSequence}</p>

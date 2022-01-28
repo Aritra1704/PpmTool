@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { deleteProject } from "../../actions/projectActions";
 
 class ProjectItem extends Component {
-    onDeleteCLick = (id) => {
+    handleDeleteCLick = (id) => {
         this.props.deleteProject(id);
     };
 
@@ -37,7 +37,7 @@ class ProjectItem extends Component {
                                 
                                 <li 
                                     className="list-group-item delete" 
-                                    onClick={this.onDeleteCLick.bind(
+                                    onClick={this.handleDeleteCLick.bind(
                                         this, 
                                         project.projectIdentifier)}
                                 >

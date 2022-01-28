@@ -10,13 +10,13 @@ class AddProjectTask extends Component {
     constructor(props) {
         super(props);
 
-        let id;
+        let backlog_id;
         const path = this.props.history.location.pathname;
         if(!path.includes("/addProjectTask"))  {// workaround to get correct params
             window.location.reload(false);
         } else {
             const pathSplit = getId(props);
-            id = pathSplit[pathSplit.length - 1];
+            backlog_id = pathSplit[pathSplit.length - 1];
         } 
 
         this.state = {
@@ -25,7 +25,7 @@ class AddProjectTask extends Component {
             "status": "",
             "priority": 0,
             "dueDate": "",
-            "projectIdentifier": id,
+            "projectIdentifier": backlog_id,
             "errors": {}
         }
 
@@ -53,6 +53,7 @@ class AddProjectTask extends Component {
             "dueDate": this.state.dueDate,
         };
 
+        console.log(this.state.projectIdentifier);
         console.log(newTask);
         this.props.addProjectTask(this.state.projectIdentifier,
             newTask,
@@ -61,7 +62,7 @@ class AddProjectTask extends Component {
 
     render() {
         const pathSplit = getId(this.props);
-        const id = pathSplit[pathSplit.length - 1];
+        const backlog_id = pathSplit[pathSplit.length - 1];
         const { errors } = this.state;
         
         return (
@@ -69,7 +70,7 @@ class AddProjectTask extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-8 m-auto">
-                            <Link to={`/projectBoard/${id}`} className="btn btn-light">
+                            <Link to={`/projectBoard/${backlog_id}`} className="btn btn-light">
                                 Back to Project Board
                             </Link>
                             <h4 className="display-4 text-center">Add Project Task</h4>
@@ -104,7 +105,10 @@ class AddProjectTask extends Component {
                                     />
                                     {
                                         errors.acceptanceCriteria && (
-                                            <div className='invalid-feedback'>{errors.acceptanceCriteria}</div>
+                                            <div 
+                                                className='invalid-feedback' >
+                                                {errors.acceptanceCriteria}
+                                            </div>
                                         )
                                     }
                                 </div>
