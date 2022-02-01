@@ -28,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html",
 						"/**/*.css", "/**/*.js")
 				.permitAll()// permit all above
+				.antMatchers("/api/users/**").permitAll()// allows all endpoints for users
 				.anyRequest().authenticated();// authenticate anything apart from mentioned above
 	}
 
