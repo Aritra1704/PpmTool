@@ -1,5 +1,6 @@
 package io.arpaul.ppmtool.web;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.arpaul.ppmtool.domain.Project;
-import io.arpaul.ppmtool.models.request.CreateProjectRequest;
-import io.arpaul.ppmtool.models.request.UpdateProjectRequest;
+import io.arpaul.ppmtool.payload.requests.CreateProjectRequest;
+import io.arpaul.ppmtool.payload.requests.UpdateProjectRequest;
 import io.arpaul.ppmtool.services.MapValidationErrorService;
 import io.arpaul.ppmtool.services.ProjectService;
 
@@ -39,7 +40,10 @@ public class ProjectController {
 	private MapValidationErrorService mapValidationErrorService;
 	
 	@PostMapping("")
-	public ResponseEntity<?> createNewProject(@Valid @RequestBody CreateProjectRequest request, BindingResult result) {
+	public ResponseEntity<?> createNewProject(
+			@Valid @RequestBody CreateProjectRequest request, 
+			BindingResult result, 
+			Principal principal) {
 		ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
 		if(errorMap != null) return errorMap;
 		
@@ -53,7 +57,7 @@ public class ProjectController {
 		
 		project.setCreated_at(request.getCreated_at());
 		project.setModified_at(request.getModified_at());
-		Project response = projectService.insertProject(project);
+		Project response = projectService.insertProject(project, principal.getName());
 		return new ResponseEntity<Project>(response, HttpStatus.OK);
 	}
 	
@@ -61,7 +65,8 @@ public class ProjectController {
 	public ResponseEntity<?> updateProject(
 			@Valid @RequestBody UpdateProjectRequest request,  
 			BindingResult result,
-			@PathVariable String projectIdentifier) {
+			@PathVariable String projectIdentifier, 
+			Principal principal) {
 		ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
 		if(errorMap != null) return errorMap;
 		
@@ -76,24 +81,24 @@ public class ProjectController {
 		project.setCreated_at(request.getCreated_at());
 		project.setModified_at(request.getModified_at());
 		
-		Project response = projectService.updateProject(project, projectIdentifier);
+		Project response = projectService.updateProject(project, projectIdentifier, principal.getName());
 		return new ResponseEntity<Project>(response, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{projectIdentifier}")
-	public ResponseEntity<?> getProjectByIDentifier(@PathVariable String projectIdentifier) {
-		Project response = projectService.findByProjectIdentifier(projectIdentifier); 
+	public ResponseEntity<?> getProjectByIDentifier(@PathVariable String projectIdentifier, Principal principal) {
+		Project response = projectService.findByProjectIdentifier(projectIdentifier, principal.getName()); 
 		return new ResponseEntity<Project>(response, HttpStatus.OK);
 	}
 	
 	@GetMapping("/all")
-	public Iterable<Project> getAllProjects() {
-		return projectService.findAllProjects();
+	public Iterable<Project> getAllProjects(Principal principal) {
+		return projectService.findAllProjects(principal.getName());
 	}
 	
 	@DeleteMapping("/{projectIdentifier}")
-	public ResponseEntity<?> deleteProject(@PathVariable String projectIdentifier) {
-		projectService.deleProjectByIdentifier(projectIdentifier);
+	public ResponseEntity<?> deleteProject(@PathVariable String projectIdentifier, Principal principal) {
+		projectService.deleProjectByIdentifier(projectIdentifier, principal.getName());
 		return new ResponseEntity<String>("Project with ID '"+projectIdentifier+"' was deleted", HttpStatus.OK);
 	}
 }

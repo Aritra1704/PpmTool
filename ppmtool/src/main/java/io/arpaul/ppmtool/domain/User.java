@@ -1,13 +1,18 @@
 package io.arpaul.ppmtool.domain;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
@@ -47,6 +52,8 @@ public class User implements UserDetails {
 	private Date updated_At;
 	
 	// Setup oneToMany with projects
+	@OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
+	private List<Project> projects = new ArrayList<>();
 	
 	public User() {
 		super();
@@ -108,6 +115,14 @@ public class User implements UserDetails {
 		this.updated_At = updated_At;
 	}
 
+	public List<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
+	}
+
 	@PrePersist
 	protected void onCreate() {
 		this.created_At = new Date();
@@ -148,5 +163,12 @@ public class User implements UserDetails {
 	@JsonIgnore
 	public boolean isEnabled() {
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", fullName=" + fullName + ", password=" + password
+				+ ", confirmPassword=" + confirmPassword + ", created_At=" + created_At + ", updated_At=" + updated_At
+				+ ", projects=" + projects + "]";
 	}
 }

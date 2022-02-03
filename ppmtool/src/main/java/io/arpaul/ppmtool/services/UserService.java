@@ -21,6 +21,10 @@ public class UserService {
 	
 	public User createUser(User newUser) {
 		try {
+			User oldUser = userRepository.findByUsername(newUser.getUsername());
+			if(oldUser != null) {// to validate if username already available
+				throw new UsernameExistsException("User ID '"+newUser.getUsername()+"' already exists.");
+			}
 			newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
 			newUser.setUsername(newUser.getUsername());
 			newUser.setConfirmPassword("");

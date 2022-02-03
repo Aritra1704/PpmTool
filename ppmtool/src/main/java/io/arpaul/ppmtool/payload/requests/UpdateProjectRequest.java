@@ -1,4 +1,4 @@
-package io.arpaul.ppmtool.models.request;
+package io.arpaul.ppmtool.payload.requests;
 
 import java.util.Date;
 
@@ -12,15 +12,9 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class CreateProjectRequest {
-	@Id
-	private Long id;
+public class UpdateProjectRequest {
 	@NotBlank(message = "Project name is required")
 	private String projectName;
-	@NotBlank(message = "Project identifier is required")
-	@Size(min = 4, max = 5, message = "Please use 4 to 5 characters")
-	@Column(updatable = false, unique = true)
-	private String projectIdentifier;
 	@NotBlank(message = "Project description is required")
 	private String description;
 	@JsonFormat(pattern = "yy-mm-dd")
@@ -28,20 +22,13 @@ public class CreateProjectRequest {
 	@JsonFormat(pattern = "yy-mm-dd")
 	private Date end_date;
 	@JsonFormat(pattern = "yy-mm-dd")
+	@Column(updatable = false)
 	private Date created_at;
 	@JsonFormat(pattern = "yy-mm-dd")
 	private Date modified_at;
 	
-	public CreateProjectRequest() {
+	public UpdateProjectRequest() {
 		super();
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getProjectName() {
@@ -50,14 +37,6 @@ public class CreateProjectRequest {
 
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
-	}
-
-	public String getProjectIdentifier() {
-		return projectIdentifier;
-	}
-
-	public void setProjectIdentifier(String projectIdentifier) {
-		this.projectIdentifier = projectIdentifier;
 	}
 
 	public String getDescription() {
@@ -102,8 +81,8 @@ public class CreateProjectRequest {
 
 	@Override
 	public String toString() {
-		return "CreateProjectRequst [id=" + id + ", projectName=" + projectName + ", projectIdentifier="
-				+ projectIdentifier + ", description=" + description + ", start_date=" + start_date + ", end_date="
-				+ end_date + ", created_at=" + created_at + ", modified_at=" + modified_at + "]";
+		return "UpdateProjectRequest [projectName=" + projectName
+				+ ", description=" + description + ", start_date=" + start_date + ", end_date=" + end_date
+				+ ", created_at=" + created_at + ", modified_at=" + modified_at + "]";
 	}
 }
