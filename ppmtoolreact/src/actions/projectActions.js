@@ -1,12 +1,12 @@
 import axios from "axios";
 import { GET_ERRORS, GET_PROJECTS, GET_PROJECT, DELETE_PROJECT, CREATE_PROJECTS, UPDATE_PROJECTS } from "./types";
 
-export const createProject = (project, history) => async dispatch => {
+export const createProject = (project, navigate) => async dispatch => {
     let type;
     let payload;
     try {
         await axios.post("/api/project", project);
-        history.push("/dashboard");
+        navigate("/dashboard");
         type = CREATE_PROJECTS;
         payload = {};
         dispatch({ type: GET_ERRORS, payload: {} });// resetting error
@@ -20,13 +20,13 @@ export const createProject = (project, history) => async dispatch => {
     }
 }
 
-export const updateProject = (project, history) => async dispatch => {
+export const updateProject = (project, navigate) => async dispatch => {
     let type;
     let payload;
     try {
         console.log(project);
         await axios.put(`/api/project/${project.projectIdentifier}`, project);
-        history.push("/dashboard");
+        navigate("/dashboard");
         type = UPDATE_PROJECTS;
         payload = {};
         dispatch({ type: GET_ERRORS, payload: {} });// resetting error
@@ -56,7 +56,7 @@ export const getProjects = () => async dispatch => {
     }
 };
 
-export const getProject = (id, history) => async dispatch => {
+export const getProject = (id, navigate) => async dispatch => {
     let type;
     let payload;
     try {
@@ -69,7 +69,7 @@ export const getProject = (id, history) => async dispatch => {
     } catch (err) {
         type = GET_ERRORS;
         payload = err.response.data;
-        history.push("/dashboard");
+        navigate("/dashboard");
     } finally {
         dispatch({ type, payload });
         console.log('getProject finally');

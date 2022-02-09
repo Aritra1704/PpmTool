@@ -4,7 +4,7 @@ import { ADD_PROJECT_TASK, DELETE_PROJECT_TASK, GET_BACKLOG, GET_ERRORS, GET_PRO
 export const addProjectTask = (
     backlog_id, 
     project_task, 
-    history
+    navigate
 ) => async dispatch => {
     let type;
     let payload;
@@ -13,7 +13,7 @@ export const addProjectTask = (
         console.log(backlog_id);
         console.log(project_task);
         await axios.post(`/api/backlog/${backlog_id}`, project_task);
-        history.push(`/projectBoard/${backlog_id}`);
+        navigate(`/projectBoard/${backlog_id}`);
         type = ADD_PROJECT_TASK;
         payload = {};
         dispatch({ type: GET_ERRORS, payload: {} });// resetting error
@@ -41,7 +41,7 @@ export const getBacklog = (backlog_id) => async dispatch => {
     }
 }
 
-export const getProjectTask = (backlog_id, projectTaskId, history) => async dispatch => {
+export const getProjectTask = (backlog_id, projectTaskId, navigate) => async dispatch => {
     let type;
     let payload;
     try {
@@ -52,25 +52,25 @@ export const getProjectTask = (backlog_id, projectTaskId, history) => async disp
     } catch(err) {
         type = GET_ERRORS;
         payload = err.response.data;
-        history.push(`/dashboard`);
+        navigate(`/dashboard`);
     } finally {
         dispatch({ type, payload });
     }
 }
 
-export const updateProjectTask = (backlog_id, projectTaskId, updateTask, history) => async dispatch => {
+export const updateProjectTask = (backlog_id, projectTaskId, updateTask, navigate) => async dispatch => {
     let type;
     let payload;
     try {
         const res = await axios.put(`/api/backlog/${backlog_id}/${projectTaskId}`, updateTask);
         type = UPDATE_PROJECT_TASK;
         payload = res.data;
-        history.push(`/projectBoard/${backlog_id}`);
+        navigate(`/projectBoard/${backlog_id}`);
         dispatch({ type: GET_ERRORS, payload: {} });// resetting error
     } catch(err) {
         type = GET_ERRORS;
         payload = err.response.data;
-        history.push(`/dashboard`);
+        navigate(`/dashboard`);
     } finally {
         dispatch({ type, payload });
     }

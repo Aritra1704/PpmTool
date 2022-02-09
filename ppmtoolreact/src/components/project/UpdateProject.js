@@ -69,7 +69,7 @@ class UpdateProject extends Component {
             "end_date": this.state.end_date,
         };
 
-        this.props.updateProject(updateProject, this.props.history);
+        this.props.updateProject(updateProject, this.props.navigate);
     }
     render () {
         const { errors } = this.state;

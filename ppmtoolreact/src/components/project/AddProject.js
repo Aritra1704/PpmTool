@@ -43,7 +43,7 @@ class AddProject extends Component {
             "end_date": this.state.end_date,
         };
 
-        this.props.createProject(newProject, this.props.history);
+        this.props.createProject(newProject, this.props.navigate);
     }
 
     render() {
@@ -86,8 +86,8 @@ class AddProject extends Component {
                                             placeholder="Unique Project ID"
                                             name="projectIdentifier"
                                             value={this.state.projectIdentifier}
-                                        onChange={this.handleChange} 
-                                    />
+                                            onChange={this.handleChange} 
+                                        />
                                         {errors.projectIdentifier && (
                                             <div className='invalid-feedback'>
                                                 {errors.projectIdentifier}
@@ -126,7 +126,10 @@ class AddProject extends Component {
                                         onChange={this.handleChange} />
                                     </div>
 
-                                    <input type="submit" className="btn btn-primary btn-block mt-4" />
+                                    <input 
+                                        type="submit" 
+                                        className="btn btn-primary btn-block mt-4" 
+                                    />
                                 </form>
                             </div>
                         </div>

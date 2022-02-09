@@ -57,7 +57,7 @@ class AddProjectTask extends Component {
         console.log(newTask);
         this.props.addProjectTask(this.state.projectIdentifier,
             newTask,
-            this.props.history);
+            this.props.navigate);
     }
 
     render() {

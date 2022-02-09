@@ -94,7 +94,7 @@ class UpdateProjectTask extends Component {
         this.props.updateProjectTask(this.state.projectIdentifier,
             this.state.projectSequence,
             updateTask,
-            this.props.history);
+            this.props.navigate);
     }
 
     render() {
