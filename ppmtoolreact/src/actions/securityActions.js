@@ -36,7 +36,7 @@ export const loginUser = (loginRequest, navigate) => async dispatch => {
         type = LOGIN_USER;
         payload = decoded;
         console.log(payload);
-        navigate("/dashboard");
+        // navigate("/dashboard"); // perform this action in Login component
         // Use below for naviaget hooks in router v6
         // navigate("/", { replace: true});
         dispatch({ type: GET_ERRORS, payload: {} });// resetting error
@@ -46,4 +46,10 @@ export const loginUser = (loginRequest, navigate) => async dispatch => {
     } finally {
         dispatch({ type, payload });
     }
+}
+
+export const logout = () => async dispatch => {
+    localStorage.removeItem("jwtToken");
+    setJwtToken(false);
+    dispatch({ type: LOGIN_USER, payload: {} });
 }

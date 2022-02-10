@@ -149,7 +149,7 @@ class Register extends Component {
   }
 }
 
-// declares that createprproject is a required prop type for this function
+// declares that createNewUser is a required prop type for this function
 Register.propTypes = {
     createNewUser: PropTypes.func.isRequired,
     errors: PropTypes.object.isRequired

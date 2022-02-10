@@ -10,7 +10,6 @@ class Login extends Component {
     
         this.state = {
             "username": "",
-            "fullName": "",
             "password": "",
             errors: {}
         };
@@ -24,6 +23,9 @@ class Login extends Component {
         if(nextProps.errors) {
             this.setState({ errors: nextProps.errors});
         }
+        if(nextProps.security.validToken) {
+            this.props.navigate("/dashboard");
+        }
     }
 
     handleChange = (e) => {
@@ -32,13 +34,10 @@ class Login extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        const user = {
-            "username": this.state.username,
-            "fullName": this.state.fullName,
-            "password": this.state.password
-        };
+        const { username, password } = this.state;
+        const loginRequest = { username, password };
 
-        this.props.loginUser(user, this.props.navigate);
+        this.props.loginUser(loginRequest, this.props.navigate);
     }
 
   render() {
@@ -104,13 +103,15 @@ class Login extends Component {
     );
   }
 }
-// declares that createprproject is a required prop type for this function
+// declares that loginUser is a required prop type for this function
 Login.propTypes = {
     loginUser: PropTypes.func.isRequired,
+    security: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({
+    security: state.security,
     errors: state.errors
 })
 

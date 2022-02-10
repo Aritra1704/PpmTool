@@ -1,8 +1,8 @@
-// Next Course episode chapter 96
-import React, { Component } from 'react';
+// Next Course episode chapter 100
+import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from './App.css';
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from "./store";
 import Header from './components/layout/Header';
@@ -15,59 +15,75 @@ import UpdateProjectTask from './components/projectBoard/projectTasks/UpdateProj
 import Landing from './components/layout/Landing';
 import Register from './components/userManagement/Register';
 import Login from './components/userManagement/Login';
+import setJwtToken from './utils/SetJwtToken';
+import jwtDecode from 'jwt-decode';
+import { LOGIN_USER } from './actions/types';
+import { logout } from './actions/securityActions';
+
+// if page is refreshed set the jwttoken again
+const jwtToken = localStorage.jwtToken;
+if(jwtToken) {
+  setJwtToken(jwtToken);
+
+  const decoded_jwtToken = jwtDecode(jwtToken);
+  store.dispatch({ type: LOGIN_USER, payload: decoded_jwtToken });
+
+  const currentTime = Date.now()/1000;
+  if(decoded_jwtToken.exp < currentTime) {
+    // handle logout
+    store.dispatch(logout());
+    // refresh page
+    window.location.href = "/";
+  }
+}
 
 const App = () => {
   let navigate = useNavigate();
   return (
     <Provider store={store}>
-    <div style={styles}>
-          <Header />
-          <Routes>
-            {
-              // Public routes
-            }
-            <Route 
-              path="/" 
-              element={<Landing />} 
-            />
-            <Route 
-              path="/register" 
-              element={<Register navigate={navigate} />} 
-            />
-            <Route 
-              path="/login" 
-              element={<Login navigate={navigate} />} 
-            />
-            {
-              // Private routes
-            }
-            {/* Use navigate to connect and replace to new link */}
-            <Route 
-              path="/dashboard" 
-              element={<Dashboard navigate={navigate} />} 
-            />
-            <Route 
-              path="/addProject" 
-              element={<AddProject navigate={navigate} />} 
-            />
-            <Route 
-              path="/updateProject/:id" 
-              element={<UpdateProject navigate={navigate} />} 
-            />
-            <Route 
-              path="/projectBoard/:id" 
-              element={<ProjectBoard navigate={navigate} />} 
-            />
-            <Route 
-              path="/addProjectTask/:id" 
-              element={<AddProjectTask navigate={navigate} />} 
-            />
-            <Route 
-              path="/updateProjectTask/:backlog_id/:projectTaskId" 
-              element={<UpdateProjectTask navigate={navigate} />} 
-            />
-          </Routes>
-        </div>
+      <div style={styles}>
+        <Header />
+        <Routes>
+          {/* Public routes */}
+          <Route 
+            path="/" 
+            element={<Landing />} 
+          />
+          <Route 
+            path="/register" 
+            element={<Register navigate={navigate} />} 
+          />
+          <Route 
+            path="/login" 
+            element={<Login navigate={navigate} />} 
+          />
+          {/* Private routes */}
+          <Route 
+            path="/dashboard" 
+            element={<Dashboard navigate={navigate} />} 
+          />
+          <Route 
+            path="/addProject" 
+            element={<AddProject navigate={navigate} />} 
+          />
+          <Route 
+            path="/updateProject/:id" 
+            element={<UpdateProject navigate={navigate} />} 
+          />
+          <Route 
+            path="/projectBoard/:id" 
+            element={<ProjectBoard navigate={navigate} />} 
+          />
+          <Route 
+            path="/addProjectTask/:id" 
+            element={<AddProjectTask navigate={navigate} />} 
+          />
+          <Route 
+            path="/updateProjectTask/:backlog_id/:projectTaskId" 
+            element={<UpdateProjectTask navigate={navigate} />} 
+          />
+        </Routes>
+      </div>
     </Provider>
   );
 }
