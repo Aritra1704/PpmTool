@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+import setJwtToken from "../utils/SetJwtToken";
 import { CREATE_USER, GET_ERRORS, LOGIN_USER } from "./types";
 
 export const createNewUser = (newUser, navigate) => async dispatch => {
@@ -19,13 +20,21 @@ export const createNewUser = (newUser, navigate) => async dispatch => {
     }
 }
 
-export const loginUser = (user, navigate) => async dispatch => {
+export const loginUser = (loginRequest, navigate) => async dispatch => {
     let type;
     let payload;
     try {
-        const res = await axios.post("/api/users/login", user);
+        const res = await axios.post("/api/users/login", loginRequest);
+        // extract token from res.data
+        const { token } = res.data;
+        // store the token in the localstorage
+        localStorage.setItem("jwtToken", token);
+        // set  our token in the localstorage
+        setJwtToken(token);
+        // decode token on react
+        const decoded = jwt_decode(token);
         type = LOGIN_USER;
-        payload = res.data;
+        payload = decoded;
         console.log(payload);
         navigate("/dashboard");
         // Use below for naviaget hooks in router v6
