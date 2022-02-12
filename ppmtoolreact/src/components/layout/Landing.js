@@ -1,11 +1,15 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Landing extends Component {
-//   static propTypes = {
-//     second: third,
-//   };
+
+    componentDidMount() {
+        if(this.props.security.validToken) {
+            this.props.navigate("/dashboard")
+        }
+    }
 
   render() {
     return (
@@ -43,4 +47,15 @@ class Landing extends Component {
   }
 }
 
-export default Landing;
+// declares that loginUser is a required prop type for this function
+Landing.propTypes = {
+    security: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state) => ({
+    security: state.security
+})
+
+export default connect(
+    mapStateToProps
+)(Landing);

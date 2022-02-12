@@ -20,6 +20,12 @@ class Register extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    if(this.props.security.validToken) {
+        this.props.navigate("/dashboard")
+    }
+  }
+
   //Life cycle hooks
     componentWillReceiveProps(nextProps) {
         if(nextProps.errors) {
@@ -152,10 +158,12 @@ class Register extends Component {
 // declares that createNewUser is a required prop type for this function
 Register.propTypes = {
     createNewUser: PropTypes.func.isRequired,
+    security: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({
+    security: state.security,
     errors: state.errors
 })
 

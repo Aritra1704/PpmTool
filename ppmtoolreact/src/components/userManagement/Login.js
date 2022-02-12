@@ -18,6 +18,12 @@ class Login extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentDidMount() {
+        if(this.props.security.validToken) {
+            this.props.navigate("/dashboard")
+        }
+    }
+
     //Life cycle hooks
     componentWillReceiveProps(nextProps) {
         if(nextProps.errors) {

@@ -1,10 +1,10 @@
-// Next Course episode chapter 100
+// Next Course episode chapter 102
 import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from './App.css';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from "./store";
+import store, { history } from "./store";
 import Header from './components/layout/Header';
 import Dashboard from './components/Dashboard';
 import AddProject from './components/project/AddProject';
@@ -19,6 +19,7 @@ import setJwtToken from './utils/SetJwtToken';
 import jwtDecode from 'jwt-decode';
 import { LOGIN_USER } from './actions/types';
 import { logout } from './actions/securityActions';
+import PrivateOutlet from './utils/PrivateOutlet';
 
 // if page is refreshed set the jwttoken again
 const jwtToken = localStorage.jwtToken;
@@ -47,7 +48,7 @@ const App = () => {
           {/* Public routes */}
           <Route 
             path="/" 
-            element={<Landing />} 
+            element={<Landing navigate={navigate} />} 
           />
           <Route 
             path="/register" 
@@ -57,31 +58,35 @@ const App = () => {
             path="/login" 
             element={<Login navigate={navigate} />} 
           />
-          {/* Private routes */}
-          <Route 
-            path="/dashboard" 
-            element={<Dashboard navigate={navigate} />} 
-          />
-          <Route 
-            path="/addProject" 
-            element={<AddProject navigate={navigate} />} 
-          />
-          <Route 
-            path="/updateProject/:id" 
-            element={<UpdateProject navigate={navigate} />} 
-          />
-          <Route 
-            path="/projectBoard/:id" 
-            element={<ProjectBoard navigate={navigate} />} 
-          />
-          <Route 
-            path="/addProjectTask/:id" 
-            element={<AddProjectTask navigate={navigate} />} 
-          />
-          <Route 
-            path="/updateProjectTask/:backlog_id/:projectTaskId" 
-            element={<UpdateProjectTask navigate={navigate} />} 
-          />
+          {/* Private routes Single route */}
+          {/* <Route
+            path="/login"
+            element={
+              <PrivateRoute>
+                <Private />
+              </PrivateRoute>
+            }
+          /> */}
+          <Route element={<PrivateOutlet />}>
+            <Route 
+              path="/dashboard" 
+              element={<Dashboard navigate={navigate} history={history} />}  />
+            <Route 
+              path="/addProject" 
+              element={ <AddProject navigate={navigate} history={history} />} />
+            <Route 
+              path="/updateProject/:id" 
+              element={<UpdateProject navigate={navigate} history={history} />} />
+            <Route 
+              path="/projectBoard/:id" 
+              element={<ProjectBoard navigate={navigate} history={history} />} />
+            <Route 
+              path="/addProjectTask/:id" 
+              element={<AddProjectTask navigate={navigate} history={history} />} />
+            <Route 
+              path="/updateProjectTask/:backlog_id/:projectTaskId" 
+              element={<UpdateProjectTask navigate={navigate} history={history} />} />
+            </Route>
         </Routes>
       </div>
     </Provider>
