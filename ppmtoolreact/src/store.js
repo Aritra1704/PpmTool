@@ -11,21 +11,23 @@ let store;
 
 export const history = createBrowserHistory();
 console.log(history);
+const reactRduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION__ &&  
+window.__REDUX_DEVTOOLS_EXTENSION__()
 
-if (window.navigator.userAgent.includes("Chrome")) {
+if (window.navigator.userAgent.includes("Chrome") && reactRduxDevTools) {
     store = createStore(rootReducer, // combine all reducers
         initialState, // initial state of data
         compose(
             applyMiddleware(...middleware), 
             // Chrome extensions for redux developer mode
-            window.__REDUX_DEVTOOLS_EXTENSION__ &&  window.__REDUX_DEVTOOLS_EXTENSION__()
+            reactRduxDevTools
         )
     );
 } else {
-    store = createStore(rootReducer, initialState, 
-        compose(
-            applyMiddleware(...middleware)
-        )
+    store = createStore(
+        rootReducer, 
+        initialState, 
+        compose(applyMiddleware(...middleware))
     );
 }
 

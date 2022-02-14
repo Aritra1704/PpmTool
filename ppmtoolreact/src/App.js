@@ -67,7 +67,7 @@ const App = () => {
               </PrivateRoute>
             }
           /> */}
-          <Route element={<PrivateOutlet />}>
+          <Route element={<PrivateOutlet redirectTo={"/login"} />}>
             <Route 
               path="/dashboard" 
               element={<Dashboard navigate={navigate} history={history} />}  />
