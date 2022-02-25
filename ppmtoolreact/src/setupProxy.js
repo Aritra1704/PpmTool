@@ -9,3 +9,8 @@ module.exports = function(app) {
     })
   );
 };
+
+// For prod
+// target: "https://blooming-ocean-11204.herokuapp.com/",
+// For localhost
+// target: "http://localhost:8080",

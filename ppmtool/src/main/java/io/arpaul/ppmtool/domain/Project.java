@@ -36,14 +36,14 @@ public class Project {
 	private String projectIdentifier;
 	@NotBlank(message = "Project description is required")
 	private String description;
-	@JsonFormat(pattern = "yy-mm-dd")
+	@JsonFormat(pattern = "yyyy-mm-dd")
 	private Date start_date;
-	@JsonFormat(pattern = "yy-mm-dd")
+	@JsonFormat(pattern = "yyyy-mm-dd")
 	private Date end_date;
-	@JsonFormat(pattern = "yy-mm-dd")
+	@JsonFormat(pattern = "yyyy-mm-dd")
 	@Column(updatable = false)
 	private Date created_at;
-	@JsonFormat(pattern = "yy-mm-dd")
+	@JsonFormat(pattern = "yyyy-mm-dd")
 	private Date modified_at;
 	@OneToOne(
 			fetch = FetchType.EAGER, // Fetches all data at a time 
